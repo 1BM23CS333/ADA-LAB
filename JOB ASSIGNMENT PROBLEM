@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <limits.h>
+
+int n, cost[10][10];
+int minCost = INT_MAX;
+
+// Function to find minimum cost assignment
+void assignment(int worker, int currentCost, int visited[10]) {
+    if (worker == n) {
+        if (currentCost < minCost) {
+            minCost = currentCost;
+        }
+        return;
+    }
+
+    for (int task = 0; task < n; task++) {
+        if (!visited[task]) {
+            visited[task] = 1;
+            assignment(worker + 1, currentCost + cost[worker][task], visited);
+            visited[task] = 0;
+        }
+    }
+}
+
+int main() {
+    printf("Enter number of workers/tasks: ");
+    scanf("%d", &n);
+
+    printf("Enter cost matrix:\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &cost[i][j]);
+        }
+    }
+
+    int visited[10] = {0};
+    assignment(0, 0, visited);
+
+    printf("Minimum cost for assignment: %d\n", minCost);
+    return 0;
+}
+
