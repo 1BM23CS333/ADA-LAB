@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+int main() {
+    int i, j, n, v, k, min, u;
+    int c[20][20], s[20], d[20];
+
+    printf("\nEnter the number of vertices: ");
+    scanf("%d", &n);
+
+    printf("\nEnter the cost adjacency matrix (999 for no edge):\n");
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= n; j++) {
+            scanf("%d", &c[i][j]);
+        }
+    }
+
+    printf("\nEnter the source vertex: ");
+    scanf("%d", &v);
+
+    // Initialization
+    for (i = 1; i <= n; i++) {
+        s[i] = 0;          // s[i] = 0 means not visited
+        d[i] = c[v][i];    // initialize distances from source
+    }
+
+    d[v] = 0;   // Distance to itself is 0
+    s[v] = 1;   // Mark source as visited
+
+    // Dijkstra's algorithm main loop
+    for (k = 2; k <= n; k++) {
+        min = 999;
+
+        // Find the unvisited vertex with the minimum distance
+        for (i = 1; i <= n; i++) {
+            if (s[i] == 0 && d[i] < min) {
+                min = d[i];
+                u = i;
+            }
+        }
+
+        s[u] = 1; // Mark the selected vertex as visited
+
+        // Update distances of adjacent unvisited vertices
+        for (i = 1; i <= n; i++) {
+            if (s[i] == 0 && d[i] > d[u] + c[u][i]) {
+                d[i] = d[u] + c[u][i];
+            }
+        }
+    }
+
+    // Print shortest distances
+    printf("\nThe shortest distances from vertex %d are:\n", v);
+    for (i = 1; i <= n; i++) {
+        printf("%d --> %d = %d\n", v, i, d[i]);
+    }
+
+    return 0;
+}
